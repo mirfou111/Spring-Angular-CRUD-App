@@ -1,0 +1,82 @@
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.1</version>
+</dependency>
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.show-sql=true
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=admin
+
+===================================================LES SERVICES RESTANTES====================================================
+
+// Signature de la methode Update Formation
+User updateUser(User user);
+	
+	
+	//Implementation de la methode update Formation dans FormationServiceImpl 
+	public User updateUser(User user) {
+		User existingUser = userRepository.findById(user.getId()).get();
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		existingUser.setEmail(user.getEmail());
+		User updatedUser = userRepository.save(existingUser);
+		return updatedUser;
+	}
+
+//Delete Formation 
+void deleteUser(Long userId);
+
+	//Implementation
+	public void deleteUser(Long userId) {
+                userRepository.deleteById(userId);
+    	}
+    	
+====================================================LES CONTROLLERS===========================================================
+
+// build create User REST API
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user){
+        User savedUser = userService.createUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+// build get user by id REST API
+
+    // http://localhost:8080/api/users/1
+    @GetMapping("{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
+        User user = userService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    
+
+// Build Get All Users REST API
+    // http://localhost:8080/api/users
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    
+// Build Update User REST API
+    @PutMapping("{id}")
+    // http://localhost:8080/api/users/1
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId,
+                                           @RequestBody User user){
+        user.setId(userId);
+        User updatedUser = userService.updateUser(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+    
+// Build Delete User REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
+    }
+    
+
