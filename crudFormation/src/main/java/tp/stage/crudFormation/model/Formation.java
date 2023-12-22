@@ -2,6 +2,7 @@ package tp.stage.crudFormation.model;
 
 import java.util.Collection;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +20,10 @@ public class Formation {
 
     private String libelle;
 
+    @ElementCollection
     private Collection<String> prerequis;
 
+    @ElementCollection
     private Collection<String> debouches;
 
 }
