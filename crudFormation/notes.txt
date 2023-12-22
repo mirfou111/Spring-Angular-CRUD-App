@@ -1,4 +1,6 @@
-Token Git : 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
+Token Git CoursDAOS: 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
+
+Token Git SpringAngularApp : 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
 
 <dependency>
     <groupId>org.postgresql</groupId>
